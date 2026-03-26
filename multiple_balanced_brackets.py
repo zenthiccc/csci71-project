@@ -1,12 +1,8 @@
-PRINT_IDS = True
-
 def is_balanced(s):
-    global PRINT_IDS
     state = "q0"
     stack = ["Z"]
 
-    if PRINT_IDS:
-        print("Processing " + s)
+    print("Processing " + s)
 
     for i in range(len(s)):
         char = s[i]
@@ -16,17 +12,15 @@ def is_balanced(s):
         for item in reversed(stack):
             stack_str = stack_str + item
 
-        if PRINT_IDS:
-            print("ID: (" + state + ", " + remaining_input + ", " + stack_str + ")")
+        print("ID: (" + state + ", " + remaining_input + ", " + stack_str + ")")
 
         if state == "q0":
             if char == "!" and stack[-1] == "Z":
                 stack.append("!")
                 state = "q1"
             else:
-                if PRINT_IDS:
-                    print("Invalid string. Failed at position " + str(i + 1) + ".")
-                    print("Remaining unprocessed input string: " + remaining_input)
+                print("Invalid string. Failed at position " + str(i + 1) + ".")
+                print("Remaining unprocessed input string: " + remaining_input)
                 return False
 
         elif state == "q1":
@@ -38,70 +32,117 @@ def is_balanced(s):
                 if stack[-1] == "<":
                     stack.pop()
                 else:
-                    if PRINT_IDS:
-                        print("Invalid string. Failed at position " + str(i + 1) + ".")
-                        print("Remaining unprocessed input string: " + remaining_input)
+                    print("Invalid string. Failed at position " + str(i + 1) + ".")
+                    print("Remaining unprocessed input string: " + remaining_input)
                     return False
             elif char == "}":
                 if stack[-1] == "{":
                     stack.pop()
                 else:
-                    if PRINT_IDS:
-                        print("Invalid string. Failed at position " + str(i + 1) + ".")
-                        print("Remaining unprocessed input string: " + remaining_input)
+                    print("Invalid string. Failed at position " + str(i + 1) + ".")
+                    print("Remaining unprocessed input string: " + remaining_input)
                     return False
             elif char == "]":
                 if stack[-1] == "[":
                     stack.pop()
                 else:
-                    if PRINT_IDS:
-                        print("Invalid string. Failed at position " + str(i + 1) + ".")
-                        print("Remaining unprocessed input string: " + remaining_input)
+                    print("Invalid string. Failed at position " + str(i + 1) + ".")
+                    print("Remaining unprocessed input string: " + remaining_input)
                     return False
             elif char == ")":
                 if stack[-1] == "(":
                     stack.pop()
                 else:
-                    if PRINT_IDS:
-                        print("Invalid string. Failed at position " + str(i + 1) + ".")
-                        print("Remaining unprocessed input string: " + remaining_input)
+                    print("Invalid string. Failed at position " + str(i + 1) + ".")
+                    print("Remaining unprocessed input string: " + remaining_input)
                     return False
             elif char == "!":
                 if stack[-1] == "!":
                     stack.pop()
                     state = "q2"
                 else:
-                    if PRINT_IDS:
-                        print("Invalid string. Failed at position " + str(i + 1) + ".")
-                        print("Remaining unprocessed input string: " + remaining_input)
-                    return False
-            else:
-                if PRINT_IDS:
                     print("Invalid string. Failed at position " + str(i + 1) + ".")
                     print("Remaining unprocessed input string: " + remaining_input)
+                    return False
+            else:
+                print("Invalid string. Failed at position " + str(i + 1) + ".")
+                print("Remaining unprocessed input string: " + remaining_input)
                 return False
 
         elif state == "q2":
-            if PRINT_IDS:
-                print("Invalid string. Failed at position " + str(i + 1) + ".")
-                print("Remaining unprocessed input string: " + remaining_input)
+            print("Invalid string. Failed at position " + str(i + 1) + ".")
+            print("Remaining unprocessed input string: " + remaining_input)
             return False
 
     stack_str = ""
     for item in reversed(stack):
         stack_str = stack_str + item
 
-    if PRINT_IDS:
-        print("ID: (" + state + ", E, " + stack_str + ")")
+    print("ID: (" + state + ", E, " + stack_str + ")")
 
     if state == "q2" and len(stack) == 1 and stack[0] == "Z":
-        if PRINT_IDS:
-            print("q2 is a final state.")
-            print(s + " is valid and has balanced brackets.")
+        print("q2 is a final state.")
+        print(s + " is valid and has balanced brackets.")
         return True
     else:
-        if PRINT_IDS:
-            print("Invalid string. " + state + " is not a final state.")
+        print("Invalid string. " + state + " is not a final state.")
+        return False
+
+
+def is_balanced_silent(s):
+    state = "q0"
+    stack = ["Z"]
+
+    for i in range(len(s)):
+        char = s[i]
+
+        if state == "q0":
+            if char == "!" and stack[-1] == "Z":
+                stack.append("!")
+                state = "q1"
+            else:
+                return False
+
+        elif state == "q1":
+            if char == "x":
+                pass
+            elif char == "<" or char == "{" or char == "[" or char == "(":
+                stack.append(char)
+            elif char == ">":
+                if stack[-1] == "<":
+                    stack.pop()
+                else:
+                    return False
+            elif char == "}":
+                if stack[-1] == "{":
+                    stack.pop()
+                else:
+                    return False
+            elif char == "]":
+                if stack[-1] == "[":
+                    stack.pop()
+                else:
+                    return False
+            elif char == ")":
+                if stack[-1] == "(":
+                    stack.pop()
+                else:
+                    return False
+            elif char == "!":
+                if stack[-1] == "!":
+                    stack.pop()
+                    state = "q2"
+                else:
+                    return False
+            else:
+                return False
+
+        elif state == "q2":
+            return False
+
+    if state == "q2" and len(stack) == 1 and stack[0] == "Z":
+        return True
+    else:
         return False
 
 
@@ -146,9 +187,6 @@ def main1():
 
 
 def main2():
-    global PRINT_IDS
-    PRINT_IDS = False
-
     file = open("input.txt", "r")
     lines = file.readlines()
     file.close()
@@ -156,7 +194,7 @@ def main2():
     for line in lines:
         clean_line = line.strip()
         if clean_line != "":
-            is_valid = is_balanced(clean_line)
+            is_valid = is_balanced_silent(clean_line)
 
             if is_valid == True:
                 answer = evaluate(clean_line)
