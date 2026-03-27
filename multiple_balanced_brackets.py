@@ -1,3 +1,6 @@
+# Josh de Vera
+# Joseph Duron Jr.
+
 def is_balanced(s):
     state = "q0"
     stack = ["Z"]
